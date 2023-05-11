@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+    <style>
+        body {
+            background-color: deepskyblue;
+        }
+    </style>
+</head>
+<body>
+<h2 style="color:#181a49;text-align:center;">Best Weather for Liljeholmen</h2>
+<form th:action="@{/bestweather}" method="get"></form>
+  <p th:text="${weather}"></p>
+</body>
+</html>
