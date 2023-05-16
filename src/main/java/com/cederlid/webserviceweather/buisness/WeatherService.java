@@ -1,7 +1,9 @@
 package com.cederlid.webserviceweather.buisness;
 
 import com.cederlid.webserviceweather.data.MetWeatherClient;
+import com.cederlid.webserviceweather.data.OpenMeteoClient;
 import com.cederlid.webserviceweather.data.SmhiWeatherClient;
+import com.cederlid.webserviceweather.data.openMeteo.OpenMeteoWeather;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +13,41 @@ public class WeatherService {
     SmhiWeatherClient smhiWeatherClient;
     @Autowired
     MetWeatherClient metWeatherClient;
+    @Autowired
+    OpenMeteoClient openMeteoClient;
 
     public Weather getBestWeather() {
+        Weather smhiWeather = smhiWeatherClient.getWeather();
+        Weather metWeather = metWeatherClient.getWeather();
+        Weather openMeteoWeather = openMeteoClient.getWeather();
+        System.out.println("smhi " + smhiWeather);
+        System.out.println("met " + metWeather);
+        System.out.println("open meteo " + openMeteoWeather);
 
-        if (smhiWeatherClient.getWeather().getTemperature() > metWeatherClient.getWeather().getTemperature()){
-            return smhiWeatherClient.getWeather();
-        }else {
-            return metWeatherClient.getWeather();
+        if (smhiWeather.getTemperature() > metWeather.getTemperature() && smhiWeather.getTemperature() > openMeteoWeather.getTemperature()){
+            return smhiWeather;
+        }else if (metWeather.getTemperature() > smhiWeather.getTemperature() && metWeather.getTemperature() > openMeteoWeather.getTemperature()){
+            return metWeather;
+        } else{
+            return openMeteoWeather;
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
