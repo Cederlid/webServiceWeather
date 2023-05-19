@@ -12,6 +12,13 @@
 <body>
 <h2 style="color:#181a49;text-align:center;">Best Weather for Liljeholmen</h2>
 <form th:action="@{/bestweather}" method="get"></form>
-  <p th:text="${weather}"></p>
+<p><b>Temperature: </b><span th:text="${weather.temperature}"️></span> °C 🌡️</p>
+<p><b>Humidity: </b><span th:text="${weather.humidity}"></span> 💦</p>
+<p><b>Origin: </b><span th:text="${weather.origin}"></span></p>
+<p><b>Time and date: </b><span th:text="${weather.timeStamp}">️</span> ⏱️</p>
+<td>
+    <span th:if="${weather.temperature <= 15}">Cold weather</span>
+    <span th:unless="${weather.temperature <= 15}">Perfect weather</span>
+</td>
 </body>
 </html>
