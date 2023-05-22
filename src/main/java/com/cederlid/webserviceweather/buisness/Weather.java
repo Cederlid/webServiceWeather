@@ -1,12 +1,14 @@
 package com.cederlid.webserviceweather.buisness;
 
+import java.time.LocalDateTime;
+
 public class Weather {
     private double temperature;
     private double humidity;
     private String origin;
-    private String timeStamp;
+    private LocalDateTime timeStamp;
 
-    public Weather(double temperature, double humidity, String origin, String timeStamp) {
+    public Weather(double temperature, double humidity, String origin, LocalDateTime timeStamp) {
         this.temperature = temperature;
         this.humidity = humidity;
         this.origin = origin;
@@ -41,11 +43,11 @@ public class Weather {
         this.origin = origin;
     }
 
-    public String getTimeStamp() {
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 

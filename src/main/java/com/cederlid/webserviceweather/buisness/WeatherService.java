@@ -16,10 +16,10 @@ public class WeatherService {
     @Autowired
     OpenMeteoClient openMeteoClient;
 
-    public Weather getBestWeather() {
-        Weather smhiWeather = smhiWeatherClient.getWeather();
-        Weather metWeather = metWeatherClient.getWeather();
-        Weather openMeteoWeather = openMeteoClient.getWeather();
+    public Weather getBestWeather(int xHour) {
+        Weather smhiWeather = smhiWeatherClient.getWeather(xHour);
+        Weather metWeather = metWeatherClient.getWeather(xHour);
+        Weather openMeteoWeather = openMeteoClient.getWeather(xHour);
         System.out.println("smhi " + smhiWeather);
         System.out.println("met " + metWeather);
         System.out.println("open meteo " + openMeteoWeather);
@@ -33,21 +33,6 @@ public class WeatherService {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
