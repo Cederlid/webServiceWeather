@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Weather</title>
-    <style>
-        body {
-            background-color: deepskyblue;
-        }
-    </style>
-</head>
-<body>
-<h2 style="color:#181a49;text-align:center;">Best Weather for Liljeholmen</h2>
-<p><b>Temperature: </b><span th:text="${weather.temperature}"️></span> °C 🌡️</p>
-<p><b>Humidity: </b><span th:text="${weather.humidity}"></span> 💦</p>
-<p><b>Origin: </b><span th:text="${weather.origin}"></span></p>
-<p><b>Time and date: </b><span th:text="${weather.timeStamp}">️</span> ⏱️</p>
-<tr>
-    <td>
-        <span th:if="${weather.temperature <= 15}">Cold weather</span>
-        <span th:unless="${weather.temperature <= 15}">Perfect weather</span>
-    </td>
-</tr>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Weather</title>
+        <style>
+            body {
+                background-color: deepskyblue;
+            }
+            #cold-weather {
+                width: 480px;
+                height: 270px;
+                border-radius: 120px;
+                border: black 1px solid;
+            }
+            #hot-weather {
+                width: 240px;
+                height: 240px;
+                border-radius: 120px;
+                border: black 1px solid;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 style="color:#181a49;text-align:center;">Best Weather for Liljeholmen</h2>
+        <p><b>Temperature: </b><span th:text="${weather.temperature}" ️></span> °C 🌡️</p>
+        <p><b>Humidity: </b><span th:text="${weather.humidity}"></span> 💦</p>
+        <p><b>Origin: </b><span th:text="${weather.origin}"></span></p>
+        <p><b>Time and date: </b><span th:text="${weather.timeStamp}">️</span> ⏱️</p>
+       <table>
+           <tr>
+               <td>
+                   <span th:if="${weather.temperature <= 15}">
+                       <iframe id="cold-weather" src="https://giphy.com/embed/s4Bi420mMDRBK" class="giphy-embed" allowFullScreen></iframe>
+                   </span>
+                   <span th:unless="${weather.temperature <= 15}">
+                       <iframe id="hot-weather" src="https://giphy.com/embed/AveIn4bVWMVjtq52ud" class="giphy-embed" allowFullScreen></iframe>
+                   </span>
+               </td>
+           </tr>
+       </table>
+    </body>
 </html>

@@ -57,7 +57,6 @@ public class SmhiWeatherClient {
                 }
             }
             if (temp.isPresent() && humid.isPresent()) {
-               // final LocalDateTime time = timeSeries.get(hourIndex).getValidTime();
                 return new Weather(temp.get(), humid.get(), "SMHI", localDateTime);
             } else {
                 throw new RuntimeException("Couldn't find humidity and temperature");
@@ -68,42 +67,3 @@ public class SmhiWeatherClient {
 
     }
 }
-//        List<Parameter> params = weather.getTimeSeries().get(26).getParameters();
-//        double temp = 0;
-//        for(Parameter p : params){
-//            if(p.getName().equals("t")){
-//              temp = p.getValues().get(0);
-//            }
-//        }
-        //       double humid = weather.getTimeSeries().get(26).getParameters().get(5).getValues().get(0);
-//        String time = weather.getTimeSeries().get(26).getValidTime();
-//        return new Weather(temp, humid, "SMHI", time );
-//    }
-
-
-
-// assert weather != null;
-//    String time;
-//    Hourly hourly = weather.getHourly();
-//    Scanner scanner = new Scanner(System.in);
-//    int x = scanner.nextInt();
-//    LocalDateTime afterXHours = LocalDateTime.now().withNano(0).withSecond(0).withMinute(0).plusHours(x);
-//        System.out.println(x + " x");
-//        System.out.println( afterXHours + " afterX");
-//
-//    int hourIndex = -1;
-//        for (int i = 0; i < hourly.getTime().size() ; i++) {
-//        LocalDateTime openMeteoHour = LocalDateTime.parse(hourly.getTime().get(i));
-//        if(openMeteoHour.equals(afterXHours))
-//            hourIndex = i;
-//    }
-//        if(hourIndex >= 0){
-//        double temp = weather.getHourly().getTemperature2m().get(hourIndex);
-//        double humid = weather.getHourly().getRelativehumidity2m().get(hourIndex);
-//        time = weather.getHourly().getTime().get(hourIndex);
-//        return new Weather(temp, humid, "Open meteo", time);
-//    }
-//        else {
-//        throw new RuntimeException("Couldn't find hour!");
-//    }
-//}

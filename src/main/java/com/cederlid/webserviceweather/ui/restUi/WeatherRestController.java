@@ -1,4 +1,4 @@
-package restUi;
+package com.cederlid.webserviceweather.ui.restUi;
 
 import com.cederlid.webserviceweather.buisness.Weather;
 import com.cederlid.webserviceweather.buisness.WeatherService;
