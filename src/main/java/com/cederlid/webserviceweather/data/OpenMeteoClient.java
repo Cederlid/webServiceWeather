@@ -6,11 +6,8 @@ import com.cederlid.webserviceweather.data.openMeteo.OpenMeteoWeather;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Scanner;
+
 
 @Repository
 public class OpenMeteoClient {
@@ -26,8 +23,6 @@ public class OpenMeteoClient {
         assert weather != null;
         Hourly hourly = weather.getHourly();
         LocalDateTime afterXHours = LocalDateTime.now().withNano(0).withSecond(0).withMinute(0).plusHours(x);
-        System.out.println(x + " x");
-        System.out.println( afterXHours + " afterX");
 
         int hourIndex = -1;
         for (int i = 0; i < hourly.getTime().size() ; i++) {

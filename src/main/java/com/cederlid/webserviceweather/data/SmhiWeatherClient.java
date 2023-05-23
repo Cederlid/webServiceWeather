@@ -10,12 +10,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 @Repository
 public class SmhiWeatherClient {

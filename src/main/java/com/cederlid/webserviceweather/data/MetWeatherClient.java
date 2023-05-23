@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
-
 
 @Repository
 public class MetWeatherClient {
@@ -38,7 +35,6 @@ public class MetWeatherClient {
             ZonedDateTime metHourInSthlm = metHour.withZoneSameInstant(ZoneId.of("Europe/Stockholm"));
             LocalDateTime metHourLocal = metHourInSthlm.toLocalDateTime();
             if (metHourLocal.equals(afterXHours)) {
-                System.out.println(" met " + metHourLocal);
                 localDateTime = metHourLocal;
                 hourIndex = i;
             }
