@@ -1,24 +1,28 @@
 package com.cederlid.webserviceweather.data;
 
 import com.cederlid.webserviceweather.buisness.Weather;
-import com.cederlid.webserviceweather.data.openMeteo.Hourly;
 import com.cederlid.webserviceweather.data.smhi.Parameter;
 import com.cederlid.webserviceweather.data.smhi.SmhiWeather;
 import com.cederlid.webserviceweather.data.smhi.TimeSeries;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Repository
 public class SmhiWeatherClient {
     WebClient client = WebClient.create("http://127.0.0.1:8080");
-    LocalDateTime localDateTime;
+
+    private LocalDateTime convertToLocalDateTime(String validTime) {
+        ZonedDateTime smhiHour = ZonedDateTime.parse(validTime);
+        ZonedDateTime smhiHourInSthlm = smhiHour.withZoneSameInstant(ZoneId.of("Europe/Stockholm"));
+        return smhiHourInSthlm.toLocalDateTime();
+    }
 
     public Weather getWeather(int x) {
         Mono<SmhiWeather> m3 = client
@@ -29,39 +33,35 @@ public class SmhiWeatherClient {
         SmhiWeather weather = m3.block();
         assert weather != null;
         LocalDateTime afterXHours = LocalDateTime.now().withNano(0).withSecond(0).withMinute(0).plusHours(x);
-        int hourIndex = -1;
         List<TimeSeries> timeSeries = weather.getTimeSeries();
-        for (int i = 0; i < timeSeries.size(); i++) {
-            ZonedDateTime smhiHour = ZonedDateTime.parse(timeSeries.get(i).getValidTime());
-            ZonedDateTime smhiHourInSthlm = smhiHour.withZoneSameInstant(ZoneId.of("Europe/Stockholm"));
-            LocalDateTime smhiHourLocal = smhiHourInSthlm.toLocalDateTime();
-            if (smhiHourLocal.equals(afterXHours)) {
-                System.out.println(" smhi " + smhiHourLocal);
-                localDateTime = smhiHourLocal;
-                hourIndex = i;
-            }
-        }
-        if (hourIndex >= 0) {
 
-            List<Parameter> params = timeSeries.get(hourIndex).getParameters();
-            Optional<Integer> temp = Optional.empty();
-            Optional<Integer> humid = Optional.empty();
-            for (Parameter p : params) {
-                if (p.getName().equals("t")) {
-                    temp = Optional.of(p.getValues().get(0));
-                }
-                if (p.getName().equals("r")) {
-                    humid = Optional.of(p.getValues().get(0));
-                }
-            }
-            if (temp.isPresent() && humid.isPresent()) {
-                return new Weather(temp.get(), humid.get(), "SMHI", localDateTime);
-            } else {
-                throw new RuntimeException("Couldn't find humidity and temperature");
-            }
-        } else {
+        Predicate<TimeSeries> predicate = t -> {
+            LocalDateTime smhiHourLocal = convertToLocalDateTime(t.getValidTime());
+            return smhiHourLocal.equals(afterXHours);
+        };
+
+        Optional<Weather> weather1 = timeSeries.stream()
+                .filter(predicate)
+                .findFirst()
+                .map(t -> {
+                    List<Parameter> p = t.getParameters();
+                    var temp = p.stream().filter(pr->pr.getName().equals("t")).findFirst()
+                            .flatMap(pr -> Optional.of(pr.getValues().get(0)));
+                    var humid = p.stream().filter(pr->pr.getName().equals("r")).findFirst()
+                            .flatMap(pr -> Optional.of(pr.getValues().get(0)));
+
+                    if (temp.isEmpty() || humid.isEmpty())
+                        throw new RuntimeException("Couldn't find humidity and temperature");
+
+                    return new Weather(temp.get(), humid.get(), "SMHI", convertToLocalDateTime(t.getValidTime()));
+                });
+
+        if (weather1.isEmpty())
             throw new RuntimeException("Couldn't find hour!");
-        }
 
-    }
+        return weather1.get();
+
+   }
+
+
 }
