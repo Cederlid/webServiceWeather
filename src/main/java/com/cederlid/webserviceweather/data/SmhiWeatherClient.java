@@ -7,6 +7,7 @@ import com.cederlid.webserviceweather.data.smhi.TimeSeries;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -45,9 +46,9 @@ public class SmhiWeatherClient {
                 .findFirst()
                 .map(t -> {
                     List<Parameter> p = t.getParameters();
-                    var temp = p.stream().filter(pr->pr.getName().equals("t")).findFirst()
+                    var temp = p.stream().filter(pr -> pr.getName().equals("t")).findFirst()
                             .flatMap(pr -> Optional.of(pr.getValues().get(0)));
-                    var humid = p.stream().filter(pr->pr.getName().equals("r")).findFirst()
+                    var humid = p.stream().filter(pr -> pr.getName().equals("r")).findFirst()
                             .flatMap(pr -> Optional.of(pr.getValues().get(0)));
 
                     if (temp.isEmpty() || humid.isEmpty())
@@ -61,7 +62,7 @@ public class SmhiWeatherClient {
 
         return weather1.get();
 
-   }
+    }
 
 
 }
